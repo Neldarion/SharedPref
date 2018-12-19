@@ -1,0 +1,39 @@
+public class MainActivity extends AppCompatActivity {
+    SharedPreferences preferences;
+    public final static String EXTRA_MESSAGE = "com.example.myprofile.login.MESSAGE";
+
+    public final static String EXTRA_PASSWD = "com.example.myprofile.login.PASSWD";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    public void ok(View view){
+          //startActivity(new Intent(this,edition.class));
+            Intent intent = new Intent(this, edition.class);
+            intent.putExtra(EXTRA_MESSAGE, this.login.getText().toString());
+            intent.putExtra(EXTRA_PASSWD, this.passwd.getText().toString());
+            startActivity(intent);
+}
+
+
+
+//---------------edition, get intent-----------
+public class edition extends AppCompatActivity {
+    SharedPreferences preferences;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        this.name.setText(intent.getStringExtra(MainActivity.EXTRA_MESSAGE));
+        this.mdp.setText(intent.getStringExtra(MainActivity.EXTRA_PASSWD));
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    public void retour(View view){
+        this.preferences.edit().putString("login", this.name.getText().toString()).apply();
+        this.preferences.edit().putString("passwd", this.mdp.getText().toString()).apply();
+        finish();
+    }
+}
